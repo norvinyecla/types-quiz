@@ -1,25 +1,27 @@
 const Pokedex = require('pokeapi-js-wrapper')
 const shuffle = require('shuffle-array')
-const P = new Pokedex.Pokedex()
 import fetch from 'isomorphic-unfetch'
-import { SIGHUP } from 'constants';
+import VoteButtons from './buttons'
 
-const Page = ({ pokemon, choices }) => 
+const Page = ({ pokemon, choices, score, answer }) => 
     <div>
-        <span>
-            Name: {pokemon.name}
-        </span>
         <div>
-            <img src={pokemon.sprites.front_default} />
+            Score: { score }
+        </div>
+        <div>
+            Name: { pokemon.name }
+        </div>
+        <div>
+            <img src={ pokemon.sprites.front_default } />
         </div>
         <span>
             Types:
-            {displayTypes(pokemon.types)}
+            { displayTypes(pokemon.types) }
         </span>
 
         <span>
             Choices:
-            {displayChoices(choices)}
+            <VoteButtons choices={choices} cb={ callback } />
         </span>
     </div>
 
@@ -29,11 +31,18 @@ Page.getInitialProps = async ({ req }) => {
     const res = await fetch('https://pokeapi.co/api/v2/pokemon/' + id)
     const obj = await res.json()
     const choices = getChoices(obj.types)
-    return { pokemon: obj, choices: choices }
+    const score = 0
+    const answer = ''
+
+    return { pokemon: obj, choices: choices, score: score, answer: answer }
 }
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function callback(selected) {
+ 
 }
 
 function getChoices(types) {
@@ -61,27 +70,16 @@ function getChoices(types) {
     return choices
 }
 
-function displayChoices(choices) {
-    const choicesList = choices.map((choice) => 
-        <li>{choice}</li>
-    )
-
-    return (
-        <ul>
-            {choicesList}
-        </ul>
-    ) 
-}
-
 function displayTypes(types) {
-    const typesList = types.map((type) => 
-        <li>{type.type.name}</li>
-    )
+    const typesList = types.map((type) => (
+        <li key={type.type.name}>{type.type.name}</li>
+    ))
 
     return (
         <ul>
-            {typesList}
+            { typesList }
         </ul>
     )
 }
+
 export default Page

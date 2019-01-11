@@ -1,13 +1,35 @@
 <template>
   <div class="game">
     <h1>Hello, this is the Game component</h1>
+    <p>
+      {{ ct }}
+    </p>
+    <button @click="reload">
+      Reload
+    </button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Game'
+  name: 'Game',
+
+  data() {
+    return {
+      ct: this.randomNumber() 
+    }
+  },
+
+  methods: {
+    randomNumber() {
+      return Math.floor( Math.random() * 250)
+    },
+    reload() {
+      this.ct = this.randomNumber()
+    }
+  }
 }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

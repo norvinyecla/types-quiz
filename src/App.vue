@@ -6,6 +6,7 @@
 
 <script>
 import Game from './components/Game.vue'
+document.title = 'Types Quiz'
 
 export default {
   name: 'app',

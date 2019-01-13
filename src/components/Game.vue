@@ -1,17 +1,21 @@
 <template>
   <div class="game">
-    <h1>{{ current.name }}</h1>
+    <h1>Your Score: {{ score }}</h1>
+    <h3>{{ current.name }}</h3>
 
     <img :src="current.sprite" />
 
     <div>
-      <button @click="reload">
-        Reload
+      <button @click="select(choices[0])">
+        {{ choices[0] }}
+      </button>
+      <button @click="select(choices[1])">
+        {{ choices[1] }}
+      </button>
+      <button @click="select(choices[2])">
+        {{ choices[2] }}
       </button>
     </div>
-    <br/>
-
-    {{ current }}    
   </div>
 </template>
 
@@ -21,35 +25,68 @@ export default {
 
   data() {
     return {
-      _: null,
+      dash: null,
       ct: null,
-      info: null,
+      score: 0,
       current: {
         sprite: null,
         name: null,
         types: null
       },
       P: null,
-      t: null
+      t: null,
+      choices: [ 
+        null, 
+        null, 
+        null 
+      ],
+      answer: null
     }
   },
 
   methods: {
     getRandomNumber() {
-      return Math.floor( Math.random() * 802)
+      return this.dash.random(1, 802)
+    },
+    select(selected) {
+      if (this.current.types[0] == selected || this.current.types[1] == selected) {
+        alert('You are correct!')
+        this.score++
+      } else {
+        alert('Sorry! It\'s ' + this.answer + '!')
+      }
+      this.reload()
     },
     reload() {
-      this.ct = this.randomNumber()
+      this.ct = this.getRandomNumber()
       this.fetch()
     },
     generateChoices(types) {
-      return types
+      var answer = null
+      if (types.length == 2) {
+        const id = this.dash.random(0, 1)
+        answer = types[id]
+      } else {
+        answer = types[0]
+      }
+      this.answer = answer
+
+      const allTypes = [ 'normal', 'fire', 'fighting', 'water', 'flying', 'grass', 'poison', 'electric', 'ground', 'psychic',
+'rock', 'ice', 'bug', 'dragon', 'ghost', 'dark', 'steel', 'fairy' ]
+      
+      var shuffled = this.dash.shuffle(allTypes)
+      while (shuffled[0] == answer || shuffled[1] == answer) {
+       shuffled = this.dash.shuffle(allTypes)
+      }
+      var choices = [ answer, shuffled[0], shuffled[1] ]
+
+      return this.dash.shuffle(choices)
     },
     fetch() {
       var t = this
       this.P.resource('/api/v2/pokemon/' + this.ct + '/')
       .then(function(response) {
-        t.current.name = t._.capitalize(response.name)
+        t.current.name = t.dash.capitalize(response.name)
         t.current.sprite =  response.sprites.front_default, 
 
         t.current.types = [ response.types[0].type.name ]
@@ -57,20 +94,20 @@ export default {
           t.current.types.push(response.types[1].type.name)
         }
 
-         var choices = t.generateChoices(t.current.types)
+         t.choices = t.generateChoices(t.current.types)
       }
     )
     }
   },
 
   mounted() {
-    const _ = require('lodash')
+    const dash = require('lodash')
     const Pokedex = require('pokeapi-js-wrapper')
     const P = new Pokedex.Pokedex({
       protocol: 'https'
     })
     this.P = P
-    this._ = _
+    this.dash = dash
     this.ct = this.getRandomNumber()
     
     this.fetch(this.ct)

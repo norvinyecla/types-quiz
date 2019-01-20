@@ -10,7 +10,8 @@
   "dependencies": {
     "lodash": "^4.17.11",
     "pokeapi-js-wrapper": "^1.1.1",
-    "vue": "^2.5.21"
+    "vue": "^2.5.21",
+    "vue-material": "^1.0.0-beta-10.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",

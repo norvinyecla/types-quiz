@@ -5,7 +5,14 @@
 </template>
 
 <script>
+import Vue from 'vue'
 import Game from './components/Game.vue'
+
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
+
+Vue.use(VueMaterial)
+
 document.title = 'Types Quiz'
 
 export default {
@@ -18,7 +25,7 @@ export default {
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Consolas', Courier, monospace;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;

@@ -8,11 +8,6 @@
 import Vue from 'vue'
 import Game from './components/Game.vue'
 
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.min.css'
-
-Vue.use(VueMaterial)
-
 document.title = 'Types Quiz'
 
 export default {

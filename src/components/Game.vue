@@ -9,15 +9,15 @@
       <img :src="current.sprite" height=150 width=150 />
 
       <div>
-        <md-button class="md-raised" v-bind:class="choices[0]" @click="select(choices[0])">
+        <div class="button" v-bind:class="choices[0]" @click="select(choices[0])">
           {{ choices[0] }}
-        </md-button>
-        <md-button class="md-raised" v-bind:class="choices[1]" @click="select(choices[1])">
+        </div>
+        <div class="button" v-bind:class="choices[1]" @click="select(choices[1])">
           {{ choices[1] }}
-        </md-button>
-        <md-button class="md-raised" v-bind:class="choices[2]" @click="select(choices[2])">
+        </div>
+        <div class="button" v-bind:class="choices[2]" @click="select(choices[2])">
           {{ choices[2] }}
-        </md-button>
+        </div>
       </div>
     </md-content>
   </div>
@@ -145,26 +145,65 @@ a {
 .score {
   padding: 5px;
 }
-.md-button-content {
+.button-content {
   text-shadow: 0 .25em 0.25em rgba(0,0,0,0.65) !important;
   color: white;
 }
-.normal { background-color: #A8A77A; }
-.fire { background-color: #EE8130; }
-.water { background-color: #6390F0; }
-.electric { background-color: #F7D02C; }
-.grass { background-color: #7AC74C; }
-.ice { background-color: #96D9D6; }
-.fighting { background-color: #C22E28; }
-.poison { background-color: #A33EA1; }
-.ground { background-color: #E2BF65; }
-.flying { background-color: #A98FF3; }
-.psychic { background-color: #F95587; }
-.bug { background-color: #A6B91A; }
-.rock { background-color: #B6A136; }
-.ghost { background-color: #735797; }
-.dragon { background-color: #6F35FC; }
-.dark { background-color: #705746; }
-.steel { background-color: #B7B7CE; }
-.fairy { background-color: #D685AD; }
+.button:hover {
+  color: white;
+}
+.normal { 
+  background-color: #A8A77A; 
+}
+.fire { 
+  background-color: #EE8130; 
+}
+.water { 
+  background-color: #6390F0; 
+}
+.electric { 
+  background-color: #F7D02C; 
+}
+.grass { 
+  background-color: #7AC74C; 
+}
+.ice { 
+  background-color: #96D9D6; 
+}
+.fighting { 
+  background-color: #C22E28; 
+}
+.poison { 
+  background-color: #A33EA1; 
+}
+.ground { 
+  background-color: #E2BF65; 
+}
+.flying { 
+  background-color: #A98FF3; 
+}
+.psychic { 
+  background-color: #F95587; 
+}
+.bug { 
+  background-color: #A6B91A; 
+}
+.rock { 
+  background-color: #B6A136; 
+}
+.ghost { 
+  background-color: #735797; 
+}
+.dragon { 
+  background-color: #6F35FC; 
+}
+.dark { 
+  background-color: #705746; 
+}
+.steel { 
+  background-color: #B7B7CE; 
+}
+.fairy { 
+  background-color: #D685AD; 
+}
 </style>

@@ -1,9 +1,9 @@
 <template>
   <div id="game">
-    <md-content class="score">
+    <div class="score">
       <h1>Your Score: {{ score }}</h1>
-    </md-content>
-    <md-content class="main">
+    </div>
+    <div class="main">
       <h2>{{ current.name }}</h2>
 
       <img :src="current.sprite" height=150 width=150 />
@@ -19,7 +19,17 @@
           {{ choices[2] }}
         </div>
       </div>
-    </md-content>
+      <div class="current-selection">
+        <h5 v-show="currentSelection">
+          You chose {{ currentSelection }}
+        </h5>
+      </div>
+      <span>
+        <div class="button" @click="submit">
+          Submit
+        </div>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -44,7 +54,8 @@ export default {
         null, 
         null 
       ],
-      answer: null
+      answer: null,
+      currentSelection: null
     }
   },
 
@@ -52,14 +63,17 @@ export default {
     getRandomNumber() {
       return this.dash.random(1, 802)
     },
-    select(selected) {
-      if (this.current.types[0] == selected || this.current.types[1] == selected) {
+    submit() {
+      if (this.current.types[0] == this.currentSelection || this.current.types[1] == this.currentSelection) {
         alert('You are correct!')
         this.score++
       } else {
         alert('Sorry! It\'s ' + this.answer + '!')
       }
       this.reload()
+    },
+    select(selected) {
+      this.currentSelection = selected
     },
     reload() {
       this.ct = this.getRandomNumber()
@@ -138,19 +152,19 @@ a {
 }
 #game {
   background-color: #f4f4f4;
-  width: 75%;
+  width: 50%;
   margin: auto;
-  padding: 15px;
+  padding: 25px;
 }
 .score {
-  padding: 5px;
+  margin-bottom: 10px;
 }
 .button-content {
   text-shadow: 0 .25em 0.25em rgba(0,0,0,0.65) !important;
-  color: white;
 }
 .button:hover {
-  color: white;
+  zoom: 1.15;
+  color: white !important;
 }
 .normal { 
   background-color: #A8A77A; 

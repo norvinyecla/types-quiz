@@ -1,9 +1,9 @@
 <template>
   <div id="game">
-    <div class="score">
-      <h1>Your Score: {{ score }}</h1>
-    </div>
-    <div class="main">
+    <div class="main" v-show="turns <= maxTurns">
+      <div class="score">
+        <h1>Your Score: {{ score }}</h1>
+      </div>
       <h2>{{ current.name }}</h2>
 
       <img :src="current.sprite" height=150 width=150 />
@@ -25,10 +25,18 @@
         </h5>
       </div>
       <span>
-        <div class="button" @click="submit">
+        <div class="button primary" @click="submit">
           Submit
         </div>
       </span>
+    </div>
+    <div class="final" v-show="turns > maxTurns">
+      <h5>
+        Your score is {{ score }}/{{ maxTurns }}
+      </h5>
+      <div class="button primary" @click="start">
+        Play Again
+      </div>
     </div>
   </div>
 </template>
@@ -55,7 +63,9 @@ export default {
         null 
       ],
       answer: null,
-      currentSelection: null
+      currentSelection: null,
+      turns: 0,
+      maxTurns: 3
     }
   },
 
@@ -70,10 +80,23 @@ export default {
       } else {
         alert('Sorry! It\'s ' + this.answer + '!')
       }
-      this.reload()
+
+      if (this.turns <= this.maxTurns) {
+        this.reload()
+      } else {
+        this.hide()
+      }
     },
     select(selected) {
       this.currentSelection = selected
+    },
+    start() {
+      this.turns = 0
+      this.currentSelection = null
+      this.current = {}
+      this.score = 0
+      this.ct = 0
+      this.reload()
     },
     reload() {
       this.ct = this.getRandomNumber()
@@ -102,6 +125,7 @@ export default {
     },
     fetch() {
       var t = this
+      this.turns = this.turns + 1
       this.P.resource('/api/v2/pokemon/' + this.ct + '/')
       .then(function(response) {
         t.current.name = t.dash.capitalize(response.name)
@@ -165,6 +189,14 @@ a {
 .button:hover {
   zoom: 1.15;
   color: white !important;
+}
+.primary {
+  background-color: lightskyblue;
+  color: white !important;
+  border: darkblue;
+}
+.primary:hover {
+  zoom: 1;
 }
 .normal { 
   background-color: #A8A77A; 

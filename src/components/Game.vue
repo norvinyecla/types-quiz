@@ -1,25 +1,43 @@
 <template>
   <div id="game">
-    <md-content class="score">
-      <h1>Your Score: {{ score }}</h1>
-    </md-content>
-    <md-content class="main">
+    <div class="main" v-show="turns <= maxTurns">
+      <div class="score">
+        <h1>Your Score: {{ score }}</h1>
+      </div>
       <h2>{{ current.name }}</h2>
 
       <img :src="current.sprite" height=150 width=150 />
 
       <div>
-        <md-button class="md-raised" v-bind:class="choices[0]" @click="select(choices[0])">
+        <div class="button" v-bind:class="choices[0]" @click="select(choices[0])">
           {{ choices[0] }}
-        </md-button>
-        <md-button class="md-raised" v-bind:class="choices[1]" @click="select(choices[1])">
+        </div>
+        <div class="button" v-bind:class="choices[1]" @click="select(choices[1])">
           {{ choices[1] }}
-        </md-button>
-        <md-button class="md-raised" v-bind:class="choices[2]" @click="select(choices[2])">
+        </div>
+        <div class="button" v-bind:class="choices[2]" @click="select(choices[2])">
           {{ choices[2] }}
-        </md-button>
+        </div>
       </div>
-    </md-content>
+      <div class="current-selection">
+        <h5 v-show="currentSelection">
+          You chose {{ currentSelection }}
+        </h5>
+      </div>
+      <span>
+        <div class="button primary" @click="submit">
+          Submit
+        </div>
+      </span>
+    </div>
+    <div class="final" v-show="turns > maxTurns">
+      <h5>
+        Your score is {{ score }}/{{ maxTurns }}
+      </h5>
+      <div class="button primary" @click="start">
+        Play Again
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,7 +62,10 @@ export default {
         null, 
         null 
       ],
-      answer: null
+      answer: null,
+      currentSelection: null,
+      turns: 0,
+      maxTurns: 3
     }
   },
 
@@ -52,13 +73,29 @@ export default {
     getRandomNumber() {
       return this.dash.random(1, 802)
     },
-    select(selected) {
-      if (this.current.types[0] == selected || this.current.types[1] == selected) {
+    submit() {
+      if (this.current.types[0] == this.currentSelection || this.current.types[1] == this.currentSelection) {
         alert('You are correct!')
         this.score++
       } else {
         alert('Sorry! It\'s ' + this.answer + '!')
       }
+
+      if (this.turns <= this.maxTurns) {
+        this.reload()
+      } else {
+        this.hide()
+      }
+    },
+    select(selected) {
+      this.currentSelection = selected
+    },
+    start() {
+      this.turns = 0
+      this.currentSelection = null
+      this.current = {}
+      this.score = 0
+      this.ct = 0
       this.reload()
     },
     reload() {
@@ -88,6 +125,7 @@ export default {
     },
     fetch() {
       var t = this
+      this.turns = this.turns + 1
       this.P.resource('/api/v2/pokemon/' + this.ct + '/')
       .then(function(response) {
         t.current.name = t.dash.capitalize(response.name)
@@ -138,33 +176,80 @@ a {
 }
 #game {
   background-color: #f4f4f4;
-  width: 75%;
+  width: 50%;
   margin: auto;
-  padding: 15px;
+  padding: 25px;
 }
 .score {
-  padding: 5px;
+  margin-bottom: 10px;
 }
-.md-button-content {
+.button-content {
   text-shadow: 0 .25em 0.25em rgba(0,0,0,0.65) !important;
-  color: white;
 }
-.normal { background-color: #A8A77A; }
-.fire { background-color: #EE8130; }
-.water { background-color: #6390F0; }
-.electric { background-color: #F7D02C; }
-.grass { background-color: #7AC74C; }
-.ice { background-color: #96D9D6; }
-.fighting { background-color: #C22E28; }
-.poison { background-color: #A33EA1; }
-.ground { background-color: #E2BF65; }
-.flying { background-color: #A98FF3; }
-.psychic { background-color: #F95587; }
-.bug { background-color: #A6B91A; }
-.rock { background-color: #B6A136; }
-.ghost { background-color: #735797; }
-.dragon { background-color: #6F35FC; }
-.dark { background-color: #705746; }
-.steel { background-color: #B7B7CE; }
-.fairy { background-color: #D685AD; }
+.button:hover {
+  zoom: 1.15;
+  color: white !important;
+}
+.primary {
+  background-color: lightskyblue;
+  color: white !important;
+  border: darkblue;
+}
+.primary:hover {
+  zoom: 1;
+}
+.normal { 
+  background-color: #A8A77A; 
+}
+.fire { 
+  background-color: #EE8130; 
+}
+.water { 
+  background-color: #6390F0; 
+}
+.electric { 
+  background-color: #F7D02C; 
+}
+.grass { 
+  background-color: #7AC74C; 
+}
+.ice { 
+  background-color: #96D9D6; 
+}
+.fighting { 
+  background-color: #C22E28; 
+}
+.poison { 
+  background-color: #A33EA1; 
+}
+.ground { 
+  background-color: #E2BF65; 
+}
+.flying { 
+  background-color: #A98FF3; 
+}
+.psychic { 
+  background-color: #F95587; 
+}
+.bug { 
+  background-color: #A6B91A; 
+}
+.rock { 
+  background-color: #B6A136; 
+}
+.ghost { 
+  background-color: #735797; 
+}
+.dragon { 
+  background-color: #6F35FC; 
+}
+.dark { 
+  background-color: #705746; 
+}
+.steel { 
+  background-color: #B7B7CE; 
+}
+.fairy { 
+  background-color: #D685AD; 
+}
 </style>

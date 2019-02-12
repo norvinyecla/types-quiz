@@ -1,7 +1,7 @@
 <template>
   <div id="game">
     <h1>
-      Pokemon Types Quiz
+      Pokémon Types Quiz
     </h1>
     <div class="main" v-show="turns <= maxTurns">
       <div class="score">
@@ -123,7 +123,7 @@ export default {
       while (shuffled[0] == answer || shuffled[1] == answer) {
        shuffled = this.dash.shuffle(allTypes)
       }
-      var choices = [ answer, shuffled[0], shuffled[1] ]
+      var choices = [ shuffled[1], answer, shuffled[0] ]
 
       return this.dash.shuffle(choices)
     },

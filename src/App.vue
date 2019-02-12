@@ -7,7 +7,7 @@
 <script>
 import Game from './components/Game.vue'
 
-document.title = 'Types Quiz'
+document.title = 'Pokémon Types Quiz'
 
 export default {
   name: 'app',

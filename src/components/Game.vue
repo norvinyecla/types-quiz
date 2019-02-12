@@ -1,14 +1,17 @@
 <template>
   <div id="game">
+    <h1>
+      Pokemon Types Quiz
+    </h1>
     <div class="main" v-show="turns <= maxTurns">
       <div class="score">
-        <h1>Your Score: {{ score }}</h1>
+        <h2>Your Score: {{ score }} / {{ maxTurns }}</h2>
       </div>
       <h2>{{ current.name }}</h2>
 
       <img :src="current.sprite" height=150 width=150 />
 
-      <div>
+      <div class="button-set">
         <div class="button" v-bind:class="choices[0]" @click="select(choices[0])">
           {{ choices[0] }}
         </div>
@@ -20,7 +23,7 @@
         </div>
       </div>
       <div class="current-selection">
-        <h5 v-show="currentSelection">
+        <h5 v-bind:class="[ currentSelection == null ? isInvisibleClass : '' ]">
           You chose {{ currentSelection }}
         </h5>
       </div>
@@ -31,7 +34,7 @@
       </span>
     </div>
     <div class="final" v-show="turns > maxTurns">
-      <h5>
+      <h5 class="total-score-message">
         Your score is {{ score }}/{{ maxTurns }}
       </h5>
       <div class="button primary" @click="start">
@@ -65,10 +68,10 @@ export default {
       answer: null,
       currentSelection: null,
       turns: 0,
-      maxTurns: 3
+      maxTurns: 10,
+      isInvisibleClass: 'is-invisible'
     }
   },
-
   methods: {
     getRandomNumber() {
       return this.dash.random(1, 802)
@@ -99,6 +102,7 @@ export default {
       this.reload()
     },
     reload() {
+      this.currentSelection = null
       this.ct = this.getRandomNumber()
       this.fetch()
     },
@@ -160,19 +164,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+h1 {
+  font-weight: bolder;
 }
 #game {
   background-color: #f4f4f4;
@@ -183,12 +176,14 @@ a {
 .score {
   margin-bottom: 10px;
 }
-.button-content {
-  text-shadow: 0 .25em 0.25em rgba(0,0,0,0.65) !important;
+.button {
+  color: white;
+  text-shadow: 0 .10em 0.10em rgba(0,0,0,0.25) !important;
 }
 .button:hover {
-  zoom: 1.15;
+  filter: brightness(80%);
   color: white !important;
+  overflow: hidden
 }
 .primary {
   background-color: lightskyblue;
@@ -197,6 +192,23 @@ a {
 }
 .primary:hover {
   zoom: 1;
+}
+.is-invisible {
+  visibility: hidden
+}
+.button-set {
+  margin: 5px;
+}
+.current-selection{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+.final {
+  margin-top: 20px;
+}
+.total-score-message {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 .normal { 
   background-color: #A8A77A; 

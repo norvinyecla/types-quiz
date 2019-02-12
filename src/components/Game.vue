@@ -8,7 +8,7 @@
 
       <img :src="current.sprite" height=150 width=150 />
 
-      <div>
+      <div class="button-set">
         <div class="button" v-bind:class="choices[0]" @click="select(choices[0])">
           {{ choices[0] }}
         </div>
@@ -20,7 +20,7 @@
         </div>
       </div>
       <div class="current-selection">
-        <h5 v-show="currentSelection">
+        <h5 v-bind:class="[ currentSelection == null ? isInvisibleClass : '' ]">
           You chose {{ currentSelection }}
         </h5>
       </div>
@@ -65,10 +65,10 @@ export default {
       answer: null,
       currentSelection: null,
       turns: 0,
-      maxTurns: 3
+      maxTurns: 10,
+      isInvisibleClass: 'is-invisible'
     }
   },
-
   methods: {
     getRandomNumber() {
       return this.dash.random(1, 802)
@@ -99,6 +99,7 @@ export default {
       this.reload()
     },
     reload() {
+      this.currentSelection = null
       this.ct = this.getRandomNumber()
       this.fetch()
     },
@@ -184,11 +185,12 @@ a {
   margin-bottom: 10px;
 }
 .button-content {
-  text-shadow: 0 .25em 0.25em rgba(0,0,0,0.65) !important;
+  text-shadow: 0 .25em 0.25em rgba(0,0,0,0.25) !important;
 }
 .button:hover {
-  zoom: 1.15;
+  filter: brightness(80%);
   color: white !important;
+  overflow: hidden
 }
 .primary {
   background-color: lightskyblue;
@@ -197,6 +199,16 @@ a {
 }
 .primary:hover {
   zoom: 1;
+}
+.is-invisible {
+  visibility: hidden
+}
+.button-set {
+  margin: 5px;
+}
+.current-selection {
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 .normal { 
   background-color: #A8A77A; 

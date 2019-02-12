@@ -1,6 +1,8 @@
-# pquiz
+# Pokémon Types Quiz
 
-## Project setup
+10-question quiz testing your knowledge of types of Pokemon, as of Gen VII. Powered by [VueJS](https://vuejs.org/) and the [Pokémon API](https://pokeapi.co/).  
+
+### Project setup
 ```
 npm install
 ```

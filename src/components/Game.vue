@@ -1,7 +1,7 @@
 <template>
   <div id="game">
     <h1>
-      Pokemon Types Quiz
+      Pokémon Types Quiz
     </h1>
     <div class="main" v-show="turns <= maxTurns">
       <div class="score">
@@ -36,6 +36,8 @@
     <div class="final" v-show="turns > maxTurns">
       <h5 class="total-score-message">
         Your score is {{ score }}/{{ maxTurns }}
+        <br/>
+        {{ message }}
       </h5>
       <div class="button primary" @click="start">
         Play Again
@@ -69,7 +71,8 @@ export default {
       currentSelection: null,
       turns: 0,
       maxTurns: 10,
-      isInvisibleClass: 'is-invisible'
+      isInvisibleClass: 'is-invisible',
+      message: ''
     }
   },
   methods: {
@@ -83,6 +86,8 @@ export default {
       } else {
         alert('Sorry! It\'s ' + this.answer + '!')
       }
+
+      this.message = this.getMessage(this.score)
 
       if (this.turns <= this.maxTurns) {
         this.reload()
@@ -141,8 +146,23 @@ export default {
         }
 
          t.choices = t.generateChoices(t.current.types)
+      })
+    },
+    getMessage(score) {
+      var message = ''
+      if (score < 3) {
+        message = 'Tough luck, try harder!'
+      } else if ( score >= 3 && score < 5 ) {
+        message = 'Not bad!'
+      } else if (score >= 5 && score < 8 ) {
+        message = 'Good job!'
+      } else if (score >= 8 && score < 10) {
+        message = 'You are amazing in this!'
+      } else if (score == 10 ) {
+        message = 'You are a Pokémon master!'
       }
-    )
+
+      return message
     }
   },
 
@@ -164,12 +184,32 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+@media all {
+  #game {
+    width: 70%;
+  }
+}
+@media all and (max-width: 991px) {
+  #game {
+    width: 75%;
+  }
+}
+
+@media all and (max-width: 768px) {
+  #game {
+    width: 85%;
+  }
+}
+@media all and (max-width: 575px) {
+  #game {
+    width: 95%;
+  }
+}
 h1 {
   font-weight: bolder;
 }
 #game {
   background-color: #f4f4f4;
-  width: 50%;
   margin: auto;
   padding: 25px;
 }
